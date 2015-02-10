@@ -4,26 +4,31 @@
 
 # install dependencies
 apt-get update
-apt-get install subversion autoconf cmake g++ --yes
+apt-get install expect subversion autoconf cmake g++ --yes
 
 # get Gecode from official repository
 cd /usr/lib/
-svn --non-interactive --username anonymous --password foo@bar.com --trust-server-cert checkout https://svn.gecode.org/svn/gecode/trunk
+expect svn_gecode.exp
+cd /usr/lib/trunk
+# dirty hack to fix bad checkout
+sleep 5
+svn --username anonymous --password foo@bar.com cleanup
+sleep 5
+svn --username anonymous --password foo@bar.com up
 
 # build Gecode
-cd /usr/lib/trunk
 ./configure --disable-gist --disable-flatzinc
-make -j 5
+make
 
 # build Quacode
 cd /usr/lib/trunk/contribs/quacode
 cmake -DGECODE_BIN=/usr/lib/trunk/ -DGECODE_SRC=/usr/lib/trunk/ .
-make -j 5
+make
 
 # relink
 ln -s /usr/lib/trunk/contribs/quacode /usr/lib/quacode
 ln -s /usr/lib/trunk/gecode /usr/lib/gecode
 
 # clean dependencies
-apt-get autoremove subversion autoconf cmake g++ --yes
+apt-get autoremove expect subversion autoconf cmake g++ --yes
 cd /

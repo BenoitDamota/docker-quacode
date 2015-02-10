@@ -1,0 +1,8 @@
+#!/usr/bin/expect
+
+spawn svn --username anonymous --password foo@bar.com  checkout https://svn.gecode.org/svn/gecode/trunk
+expect "(R)eject, accept (t)emporarily or accept (p)ermanently? "
+send -- "p\r"
+expect "Store password unencrypted (yes/no)? "
+send -- "no\r"
+expect eof
