@@ -20,4 +20,3 @@ Or directly:
 ```bash
 sudo docker run -t -i bdamota/quacode /usr/lib/quacode/nim-fibo
 ```
-# docker-boinc-client
